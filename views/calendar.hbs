@@ -1,0 +1,34 @@
+<h2>Calendar</h2>
+<table class="table">
+  <thead class="thead-light">
+    <th scope="col">Subject</th>
+    <th scope="col">Start</th>
+    <th scope="col">End</th>
+    <th scope="col">Attendees</th>
+  </thead>
+  <tbody>
+    {{#each events}}
+       <form name="submitForm" action="/calendar/update" method="post">
+      <input name="id" value={{this.id}} type="hidden" />
+
+      <tr>
+        <td><input name="subject" value={{this.subject}} type="subject" /></td>
+        <td><input name="startDate" value={{this.start.dateTime}} type="datetime-local" /></td>
+        <td><input name="endDate" value={{this.end.dateTime}} type="datetime-local" /></td>
+        <td>
+          <ul class="list-unstyled">
+            {{#each this.attendees}}
+              <li class="border p-1" title="{{this.emailAddress.address}}">
+                {{this.emailAddress.name}}
+              </li>
+            {{/each}}
+          </ul>
+        </td>
+        <td>
+            <button href="javascript:document.submitForm.submit()">UPDATE</button>
+        </td>
+      </tr>
+      </form>
+    {{/each}}
+  </tbody>
+</table>
