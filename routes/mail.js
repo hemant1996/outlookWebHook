@@ -12,7 +12,6 @@ router.get('/', async function (req, res, next) {
     if (accessToken && userName) {
         parms.user = userName;
 
-        // Initialize Graph client
         const client = graph.Client.init({
             authProvider: (done) => {
                 done(null, accessToken);
@@ -20,7 +19,6 @@ router.get('/', async function (req, res, next) {
         });
 
         try {
-            // Get the 10 newest messages from inbox
             const result = await client
                 .api('/me/mailfolders/inbox/messages')
                 .top(10)

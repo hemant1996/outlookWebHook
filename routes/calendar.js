@@ -5,7 +5,6 @@ var graph = require('@microsoft/microsoft-graph-client');
 var moment = require('moment')
 var listenRouter = express.Router();
 
-/* GET /calendar */
 router.get('/', async function (req, res, next) {
     let parms = { title: 'Calendar', active: { calendar: true } };
 
@@ -15,20 +14,16 @@ router.get('/', async function (req, res, next) {
     if (accessToken && userName) {
         parms.user = userName;
 
-        // Initialize Graph client
         const client = graph.Client.init({
             authProvider: (done) => {
                 done(null, accessToken);
             }
         });
 
-        // Set start of the calendar view to today at midnight
         const start = new Date(new Date().setHours(0, 0, 0));
-        // Set end of the calendar view to 7 days from start
         const end = new Date(new Date(start).setDate(start.getDate() + 7));
 
         try {
-            // Get the first 10 events for the coming week
             const result = await client
                 .api(`/me/calendarView?startDateTime=${start.toISOString()}&endDateTime=${end.toISOString()}`)
                 .top(10)
@@ -50,7 +45,6 @@ router.get('/', async function (req, res, next) {
         }
 
     } else {
-        // Redirect to home
         res.redirect('/');
     }
 });
@@ -64,14 +58,12 @@ router.post('/update', async function (req, res, next) {
     if (accessToken && userName) {
         parms.user = userName;
 
-        // Initialize Graph client
         const client = graph.Client.init({
             authProvider: (done) => {
                 done(null, accessToken);
             }
         });
 
-        //console.log(req.body);
         let id = req.body.id
         try {
             const result = await client
@@ -88,7 +80,6 @@ router.post('/update', async function (req, res, next) {
         }
 
     } else {
-        // Redirect to home
         res.redirect('/calendar/');
     }
 });
@@ -102,14 +93,12 @@ router.get('/subscribe', async function (req, res, next) {
     if (accessToken && userName) {
         parms.user = userName;
 
-        // Initialize Graph client
         const client = graph.Client.init({
             authProvider: (done) => {
                 done(null, accessToken);
             }
         });
 
-        //console.log(req.body);
         let id = req.body.id
         try {
             const result = await client
@@ -130,7 +119,6 @@ router.get('/subscribe', async function (req, res, next) {
         }
 
     } else {
-        // Redirect to home
         res.redirect('/calendar/');
     }
 });
